@@ -9,10 +9,11 @@ struct CellCoord
 
 struct surround
 {
-	bool  top;
+	bool top;
 	bool bot;
 	bool left;
 	bool right;
+	bool centre;
 };
 
 #include <stdlib.h>     // srand, rand 
@@ -24,19 +25,16 @@ class Board
 {
 private:
 	Cell sea[10][10];
-	surround checkSurround(CellCoord cc, int range);
 	
 public:
+	surround checkSurround(CellCoord cc, int range);
 	Board();
 	~Board();
-	//void set_Submarines();
-	//void set_Destroyer();
-	//void set_Cruiser();
-	//void set_Battleship();
-	//void set_AircraftCarrier();
 	int num_of_occupied();
 	void randShip(int n);
-	void set_Board();
+	void placeShips();
+	void Clear_board();
+	Cell& getCell(int i, int j);
 
 
 
