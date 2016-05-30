@@ -10,6 +10,7 @@ Board::~Board()
 {
 }
 
+
 int Board::num_of_occupied()
 {
 	int count = 0;
@@ -29,7 +30,7 @@ int Board::num_of_occupied()
 CellCoord randCoord() {
 	CellCoord randResult;
 	srand(time(NULL));
-	// generates number between 0 and 10:
+	// generates number between 0 and 9:
 	randResult.x = rand() % 10;
 	randResult.y = rand() % 10;
 	return randResult;
@@ -41,22 +42,28 @@ surround Board::checkSurround(CellCoord cc, int range) {
 	result.top = true;
 	result.left = true;
 	result.right = true;
+	result.centre = true;
+
+	if (sea[cc.x][cc.y].get_occupied())
+	{
+		result.centre = false;
+	}
 
 	for (int i = 0; i < range; i++)
 	{
-		if (sea[cc.x + range - i][cc.y].get_occupied() || cc.x + range > 9)
+		if (sea[cc.x][cc.y + range - i].get_occupied() || cc.y + range > 9)
 		{
 			result.right = false;
 		}
-		if (sea[cc.x - range - i][cc.y].get_occupied() || cc.x - range > 9)
+		if (sea[cc.x][cc.y - range + i].get_occupied() || cc.y - range < 0)
 		{
 			result.left = false;
 		}
-		if (sea[cc.x][cc.y + range - i].get_occupied() || cc.y + range > 9)
+		if (sea[cc.x + range - i][cc.y].get_occupied() || cc.x + range > 9)
 		{
 			result.bot = false;
 		}
-		if (sea[cc.x][cc.y - range - i].get_occupied() || cc.y - range > 9)
+		if (sea[cc.x - range + i][cc.y].get_occupied() || cc.x - range < 0)
 		{
 			result.top = false;
 		}
@@ -85,7 +92,7 @@ void Board::randShip(int n) {
 	{
 		//rand of all 4
 		r = rand() % 4;
-		for (int i = 1; i < n; i++)
+		for (int i = 1; i <= n; i++)
 		{
 			switch (r)
 			{
@@ -104,15 +111,15 @@ void Board::randShip(int n) {
 		checkSurround(CellCheck, n).left)
 	{
 		r = rand() % 3;
-		for (int i = 1; i < n; i++)
+		for (int i = 1; i <= n; i++)
 		{
 			switch (r)
 			{
 			case 0: sea[CellCheck.x][CellCheck.y - i].set_occupied();
 				break;
-			case 1: sea[CellCheck.x][CellCheck.y + i].set_occupied();
+			case 1: sea[CellCheck.x - i][CellCheck.y].set_occupied();
 				break;
-			case 2: sea[CellCheck.x - i][CellCheck.y].set_occupied();
+			case 2: sea[CellCheck.x + i][CellCheck.y].set_occupied();
 				break;
 			}
 		}
@@ -120,41 +127,7 @@ void Board::randShip(int n) {
 	else if (checkSurround(CellCheck, n).bot && checkSurround(CellCheck, n).top && checkSurround(CellCheck, n).right)
 	{
 		r = rand() % 3;
-		for (int i = 1; i < n; i++)
-		{
-			switch (r)
-			{
-			case 0: sea[CellCheck.x][CellCheck.y - i].set_occupied();
-				break;
-			case 1: sea[CellCheck.x][CellCheck.y + i].set_occupied();
-				break;
-			case 2: sea[CellCheck.x + i][CellCheck.y].set_occupied();
-				break;
-			}
-		}
-
-	}
-	else if (checkSurround(CellCheck, n).left && checkSurround(CellCheck, n).top && checkSurround(CellCheck, n).right)
-	{
-		r = rand() % 3;
-		for (int i = 1; i < n; i++)
-		{
-			switch (r)
-			{
-			case 0: sea[CellCheck.x][CellCheck.y - i].set_occupied();
-				break;
-			case 1: sea[CellCheck.x][CellCheck.y + i].set_occupied();
-				break;
-			case 2: sea[CellCheck.x + i][CellCheck.y].set_occupied();
-				break;
-			}
-		}
-
-	}
-	else if (checkSurround(CellCheck, n).left && checkSurround(CellCheck, n).bot && checkSurround(CellCheck, n).right)
-	{
-		r = rand() % 3;
-		for (int i = 1; i < n; i++)
+		for (int i = 1; i <= n; i++)
 		{
 			switch (r)
 			{
@@ -168,16 +141,50 @@ void Board::randShip(int n) {
 		}
 
 	}
-	else if (checkSurround(CellCheck, n).bot && checkSurround(CellCheck, n).top)
+	else if (checkSurround(CellCheck, n).left && checkSurround(CellCheck, n).top && checkSurround(CellCheck, n).right)
 	{
-		r = rand() % 2;
-		for (int i = 1; i < n; i++)
+		r = rand() % 3;
+		for (int i =1; i <= n; i++)
 		{
 			switch (r)
 			{
 			case 0: sea[CellCheck.x][CellCheck.y - i].set_occupied();
 				break;
-			case 1: sea[CellCheck.x][CellCheck.y + i].set_occupied();
+			case 1: sea[CellCheck.x - i][CellCheck.y + i].set_occupied();
+				break;
+			case 2: sea[CellCheck.x][CellCheck.y + i].set_occupied();
+				break;
+			}
+		}
+
+	}
+	else if (checkSurround(CellCheck, n).left && checkSurround(CellCheck, n).bot && checkSurround(CellCheck, n).right)
+	{
+		r = rand() % 3;
+		for (int i =1; i <= n; i++)
+		{
+			switch (r)
+			{
+			case 0: sea[CellCheck.x][CellCheck.y - i].set_occupied();
+				break;
+			case 1: sea[CellCheck.x - i][CellCheck.y + i].set_occupied();
+				break;
+			case 2: sea[CellCheck.x + i][CellCheck.y].set_occupied();
+				break;
+			}
+		}
+
+	}
+	else if (checkSurround(CellCheck, n).bot && checkSurround(CellCheck, n).top)
+	{
+		r = rand() % 2;
+		for (int i = 1; i <= n; i++)
+		{
+			switch (r)
+			{
+			case 0: sea[CellCheck.x - i][CellCheck.y - i].set_occupied();
+				break;
+			case 1: sea[CellCheck.x + i][CellCheck.y].set_occupied();
 				break;
 			}
 		}
@@ -185,7 +192,7 @@ void Board::randShip(int n) {
 	else if (checkSurround(CellCheck, n).top && checkSurround(CellCheck, n).left)
 	{
 		r = rand() % 2;
-		for (int i = 1; i < n; i++)
+		for (int i = 1; i <= n; i++)
 		{
 			switch (r)
 			{
@@ -199,22 +206,8 @@ void Board::randShip(int n) {
 	else if (checkSurround(CellCheck, n).top && checkSurround(CellCheck, n).right)
 	{
 		r = rand() % 2;
-		for (int i = 1; i < n; i++)
+		for (int i = 1; i <= n; i++)
 		{	
-			switch (r)
-			{
-			case 0: sea[CellCheck.x][CellCheck.y - i].set_occupied();
-				break;
-			case 1: sea[CellCheck.x + i][CellCheck.y].set_occupied();
-				break;
-			}
-		}
-	}
-	else if (checkSurround(CellCheck, n).bot && checkSurround(CellCheck, n).left)
-	{
-		r = rand() % 2;
-		for (int i = 1; i < n; i++)
-		{
 			switch (r)
 			{
 			case 0: sea[CellCheck.x][CellCheck.y + i].set_occupied();
@@ -224,10 +217,24 @@ void Board::randShip(int n) {
 			}
 		}
 	}
+	else if (checkSurround(CellCheck, n).bot && checkSurround(CellCheck, n).left)
+	{
+		r = rand() % 2;
+		for (int i = 1; i <= n; i++)
+		{
+			switch (r)
+			{
+			case 0: sea[CellCheck.x][CellCheck.y - i].set_occupied();
+				break;
+			case 1: sea[CellCheck.x + i][CellCheck.y].set_occupied();
+				break;
+			}
+		}
+	}
 	else if (checkSurround(CellCheck, n).bot && checkSurround(CellCheck, n).right)
 	{
 		r = rand() % 2;
-		for (int i = 1; i < n; i++)
+		for (int i = 1; i <= n; i++)
 		{
 			switch (r)
 			{
@@ -241,25 +248,33 @@ void Board::randShip(int n) {
 	else if (checkSurround(CellCheck, n).left && checkSurround(CellCheck, n).right)
 	{
 		r = rand() % 2;
-		for (int i = 1; i < n; i++)
+		for (int i = 1; i <= n; i++)
 		{	
 			switch (r)
 			{
-			case 0: sea[CellCheck.x - i][CellCheck.y].set_occupied();
+			case 0: sea[CellCheck.x][CellCheck.y + i].set_occupied();
 				break;
-			case 1: sea[CellCheck.x + i][CellCheck.y].set_occupied();
+			case 1: sea[CellCheck.x][CellCheck.y - i].set_occupied();
 				break;
 			}
 		}
 	}
 	else if (checkSurround(CellCheck, n).bot)
 	{
-		for (int i = 1; i < n; i++)
+		for (int i = 1; i <= n; i++)
 		{
-			sea[CellCheck.x][CellCheck.y + i].set_occupied();
+			sea[CellCheck.x + i][CellCheck.y].set_occupied();
 		}
 	}
 	else if (checkSurround(CellCheck, n).top)
+	{
+		for (int i = 1; i <= n; i++)
+		{
+			sea[CellCheck.x -i][CellCheck.y].set_occupied();
+		}
+
+	}
+	else if (checkSurround(CellCheck, n).left)
 	{
 		for (int i = 1; i <= n; i++)
 		{
@@ -267,33 +282,43 @@ void Board::randShip(int n) {
 		}
 
 	}
-	else if (checkSurround(CellCheck, n).left)
-	{
-		for (int i = 1; i < n; i++)
-		{
-			sea[CellCheck.x - i][CellCheck.y].set_occupied();
-		}
-
-	}
 	else if (checkSurround(CellCheck, n).right)
 	{
-		for (int i = 1; i < n; i++)
+		for (int i = 1; i <= n; i++)
 		{
-			sea[CellCheck.x + i][CellCheck.y].set_occupied();
+			sea[CellCheck.x][CellCheck.y + i].set_occupied();
 		}
 	}
 
 }
 
-void Board::set_Board()
+void Board::placeShips()
 {
-	randShip(1);
-	randShip(1);
-	randShip(2);
-	randShip(2);
-	randShip(3);
 	randShip(4);
-	randShip(5);
+	randShip(3);
+	randShip(2);
+	randShip(1);
+	randShip(1);
+	randShip(0);
+	randShip(0);
 }
+
+
+void Board::Clear_board()
+{
+	for (int i = 0; i < 10; i++)
+	{
+		for (int j = 0; j < 10; j++)
+		{
+			sea[i][j].clear();
+		}
+	}
+}
+
+Cell & Board::getCell(int i, int j)
+{
+	return sea[i][j];
+}
+
 
 
