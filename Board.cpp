@@ -27,6 +27,22 @@ int Board::num_of_occupied()
 	return count;
 }
 
+int Board::num_of_hit()
+{
+	int count = 0;
+	for (int i = 0; i < 10; i++)
+	{
+		for (int j = 0; j < 10; j++)
+		{
+			if (sea[i][j].get_hit())
+			{
+				count++;
+			}
+		}
+	}
+	return count;
+}
+
 CellCoord randCoord() {
 	CellCoord randResult;
 	srand(time(NULL));
