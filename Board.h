@@ -31,6 +31,7 @@ public:
 	Board();
 	~Board();
 	int num_of_occupied();
+	int num_of_hit();
 	void randShip(int n);
 	void placeShips();
 	void Clear_board();
