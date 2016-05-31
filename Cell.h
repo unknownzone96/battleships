@@ -21,7 +21,7 @@ public:
 	bool get_hit();
 	bool get_missed();
 
-
+ 
 };
 
 #endif // !CELL_H
