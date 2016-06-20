@@ -31,19 +31,18 @@ void Cell::set_missed()
 	this->missed = true;
 }
 
-bool Cell::get_occupied()
+bool Cell::get_occupied()const
 {
 	return occupied;
 }
 
-bool Cell::get_hit()
+bool Cell::get_hit()const
 {
 	return hit;
 }
 
-bool Cell::get_missed()
+bool Cell::get_missed()const
 {
 	return missed;
 }
 
- 
