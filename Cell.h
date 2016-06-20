@@ -17,11 +17,10 @@ public:
 	void set_hit();
 	void clear();
 	void set_missed();
-	bool get_occupied();
-	bool get_hit();
-	bool get_missed();
+	bool get_occupied()const;
+	bool get_hit()const;
+	bool get_missed()const;
 
- 
 };
 
 #endif // !CELL_H
