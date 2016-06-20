@@ -317,6 +317,11 @@ void Board::placeShips()
 	randShip(1);
 	randShip(0);
 	randShip(0);
+	if (num_of_occupied() != 18)
+	{
+		Clear_board();
+		placeShips();
+	}
 }
 
 
@@ -334,6 +339,83 @@ void Board::Clear_board()
 Cell & Board::getCell(int i, int j)
 {
 	return sea[i][j];
+}
+
+void Board::draw()
+{
+
+	system("cls");
+	cout << "number of ships hit : " << num_of_hit() << " of " << num_of_occupied() << endl;
+	for (int i = 0; i < 10; i++)
+	{
+		if (i == 0)
+		{
+			cout << " .__0";
+		}
+		else
+		{
+			cout << "__" << i << "_";
+		}
+
+	}
+	cout << " ." << "\n";
+	//cout << "._______________________________________." << endl;
+	for (int i = 0; i < 10; i++)
+	{
+
+		for (int j = 0; j < 10; j++)
+		{
+			if (j == 0)
+			{
+				cout << i;
+			}
+			if (j == 9)
+			{
+				if (getCell(i, j).get_hit())
+				{
+					cout << "_X_|" << endl;
+				}
+				else if (getCell(i, j).get_missed())
+				{
+					cout << "_o_|" << endl;
+				}
+				else
+				{
+					cout << "_~_|" << endl;
+				}
+			}
+			else if (j == 0)
+			{
+				if (getCell(i, j).get_hit())
+				{
+					cout << "|_X_|";
+				}
+				else if (getCell(i, j).get_missed())
+				{
+					cout << "|_o_|";
+				}
+				else
+				{
+					cout << "|_~_|";
+				}
+			}
+			else
+			{
+				if (getCell(i, j).get_hit())
+				{
+					cout << "_X_|";
+				}
+				else if (getCell(i, j).get_missed())
+				{
+					cout << "_o_|";
+				}
+				else
+				{
+					cout << "_~_|";
+				}
+			}
+		}
+	}
 }
 
 
