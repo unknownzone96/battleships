@@ -6,18 +6,15 @@
 class Player
 {
 private:
-	int health_points;
 	Board plBoard;
 public:
-	
 	Player();
 	~Player();
-	void hit(int i, int j);
-	void draw();
+	void hit(int i,int j);
 	Board& get_board();
 	bool gameOver();
 	void game();
-
+	
 
 };
 
