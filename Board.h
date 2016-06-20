@@ -36,9 +36,7 @@ public:
 	void placeShips();
 	void Clear_board();
 	Cell& getCell(int i, int j);
-
-
-
+	void draw();
 };
 
 
